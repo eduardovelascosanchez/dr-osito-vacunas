@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#6b5ca5">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon-192.png">
+  <title>Dr. Osito • Vacunación 2025</title>
+  <style>
+    :root {
+      --lav: #6b5ca5;
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --ink: #2c2c33;
+      --muted: #6a6a78;
+      --good: #1f7a4a;
+      --warn: #a35a00;
+      --shadow: 0 6px 18px rgba(0,0,0,.08);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    body {
+      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--ink);
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    header {
+      background: linear-gradient(135deg, var(--lav), #8b7bd1);
+      color: #fff;
+      padding: 16px 16px 14px;
+      position: sticky; top:0; z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+    }
+    .brand {
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      max-width: 980px; margin: 0 auto;
+    }
+    .brand-left {display:flex; gap:12px; align-items:center}
+    .mascot {
+      width:56px; height:56px; flex: 0 0 56px;
+      background: rgba(255,255,255,.18); border-radius: 18px;
+      display:grid; place-items:center;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .brand h1 {
+      margin:0; font-size: 1.05rem; line-height: 1.2;
+    }
+    .brand p {
+      margin:4px 0 0; font-size: .88rem; opacity: .95;
+    }
+    .chip {
+      font-size:.78rem; background: rgba(255,255,255,.22);
+      padding:6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25);
+      white-space: nowrap;
+    }
+    nav {
+      display:flex; gap:10px; overflow:auto;
+      padding: 10px 16px 0;
+      max-width: 980px; margin: 0 auto;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar {display:none}
+    nav a {
+      text-decoration:none; color: #fff; font-weight: 700;
+      font-size:.86rem; padding: 10px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.22);
+      flex: 0 0 auto;
+    }
+    main {max-width: 980px; margin: 14px auto 28px; padding: 0 16px;}
+    .grid {display:grid; gap:14px; grid-template-columns: 1fr;}
+    @media (min-width: 860px) { .grid {grid-template-columns: 1.1fr .9fr;} }
+    .card {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    h2 {margin: 0 0 10px; font-size: 1.02rem; color: #4a3f7a;}
+    h3 {margin: 14px 0 8px; font-size: .95rem; color: #453b73;}
+    .sub {color: var(--muted); font-size: .9rem; margin: 0 0 10px;}
+    .pillrow {display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px;}
+    .pill {
+      font-size:.82rem; padding: 8px 10px; border-radius: 999px;
+      background: #f1effa; border: 1px solid #e4e0f7; color: #3f3568;
+      cursor:pointer; user-select:none;
+    }
+    .pill.active {background:#e7e3ff; border-color:#d4cdfc}
+    .ageblock {display:none;}
+    .ageblock.active {display:block;}
+    ul {margin: 8px 0 0; padding-left: 18px;}
+    li {margin: 6px 0;}
+    .note {
+      margin-top: 10px; padding: 10px 12px; border-radius: 14px;
+      background: #f7f6ff; border: 1px dashed #d9d2ff; color: #3f3568;
+      font-size: .9rem;
+    }
+    .badge {
+      display:inline-block; font-size: .78rem; font-weight: 800;
+      padding: 4px 8px; border-radius: 10px; margin-right: 6px;
+      background: #eaf7ef; color: var(--good); border: 1px solid #cfead9;
+    }
+    .badge.warn {background:#fff1df; color: var(--warn); border-color:#ffe0b6;}
+    .btnrow {display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;}
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      text-decoration:none; font-weight: 800;
+      background: var(--lav); color: #fff;
+      padding: 10px 12px; border-radius: 14px;
+      border: none; cursor: pointer;
+      font-size: .9rem;
+    }
+    .btn.secondary {background:#efeefe; color:#3f3568; border:1px solid #ded9fb;}
+    details {
+      background: #fbfbff; border: 1px solid #ecebfb; border-radius: 14px;
+      padding: 10px 12px; margin-top: 10px;
+    }
+    summary {cursor:pointer; font-weight: 800; color:#3f3568;}
+    footer {
+      color: #6a6a78; font-size: .78rem; text-align:center;
+      padding: 18px 16px 24px;
+      max-width: 980px; margin: 0 auto;
+    }
+    .tiny {font-size:.78rem; color: var(--muted);}
+    .kpi {
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top: 8px;
+    }
+    .kpi .k {
+      background:#f5f4ff; border: 1px solid #e6e3fb; border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .k b {display:block; color:#3f3568;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-left">
+        <div class="mascot"><svg width="64" height="64" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="Dr. Osito">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#f4d6b0"/>
+      <stop offset="1" stop-color="#f0caa0"/>
+    </linearGradient>
+  </defs>
+  <circle cx="30" cy="32" r="18" fill="url(#g)"/>
+  <circle cx="98" cy="32" r="18" fill="url(#g)"/>
+  <circle cx="64" cy="66" r="46" fill="url(#g)"/>
+  <circle cx="48" cy="62" r="6" fill="#2d2d2d"/>
+  <circle cx="80" cy="62" r="6" fill="#2d2d2d"/>
+  <ellipse cx="64" cy="78" rx="14" ry="10" fill="#e9b7a4"/>
+  <circle cx="58" cy="76" r="3" fill="#2d2d2d"/>
+  <circle cx="70" cy="76" r="3" fill="#2d2d2d"/>
+  <path d="M56 88 C62 94, 66 94, 72 88" stroke="#2d2d2d" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M34 104 C46 94, 82 94, 94 104 L94 118 C82 122, 46 122, 34 118 Z" fill="#ffffff"/>
+  <path d="M44 108 H84" stroke="#6b5ca5" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="64" cy="108" r="7" fill="#6b5ca5"/>
+  <path d="M64 100 v16" stroke="#6b5ca5" stroke-width="5" stroke-linecap="round"/>
+</svg></div>
+        <div>
+          <h1>Dr. Osito te guía: Vacunación del nacimiento a 21 años</h1>
+          <p>Calendario claro para familias • Basado en guías AAP/CDC/OMS (2024–2025)</p>
+        </div>
+      </div>
+      <div class="chip" id="installHint">📲 Instálame</div>
+    </div>
+    <nav>
+      <a href="#calendario">📅 Calendario</a>
+      <a href="#novedades">⭐ Novedades</a>
+      <a href="#faq">❓ Dudas</a>
+      <a href="#accion">📞 Acción</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card" id="calendario">
+        <h2>📅 Calendario por edad</h2>
+        <p class="sub">Toca la edad de tu hijo/a y Dr. Osito te muestra qué vacunas suelen corresponder.</p>
+
+        <div class="pillrow" id="agePills">
+          <div class="pill active" data-target="rn">👶 RN</div>
+          <div class="pill" data-target="m2">2 meses</div>
+          <div class="pill" data-target="m4">4 meses</div>
+          <div class="pill" data-target="m6">6 meses</div>
+          <div class="pill" data-target="m12">12 meses</div>
+          <div class="pill" data-target="m18">18 meses</div>
+          <div class="pill" data-target="y4_6">4–6 años</div>
+          <div class="pill" data-target="y9_14">9–14 años</div>
+          <div class="pill" data-target="y11_12">11–12 años</div>
+          <div class="pill" data-target="y16_18">16–18 años</div>
+          <div class="pill" data-target="y19_21">19–21 años</div>
+        </div>
+
+        <div class="note"><span class="badge">TIP</span>Si tu hijo/a tiene alguna condición (prematurez, cardiopatía, asma, inmunosupresión, etc.), el pediatra puede ajustar el esquema.</div>
+
+        <div class="ageblock active" id="rn">
+          <h3>👶 Recién nacido</h3>
+          <ul>
+            <li><b>BCG</b> (según programa local): protege contra formas graves de tuberculosis.</li>
+            <li><b>Hepatitis B</b> (1ª dosis): ideal dentro de las primeras 24 horas.</li>
+          </ul>
+          <div class="note"><span class="badge warn">IMPORTANTE</span>En hepatitis B, la dosis al nacimiento es clave para prevenir infección crónica.</div>
+        </div>
+
+        <div class="ageblock" id="m2">
+          <h3>2 meses</h3>
+          <ul>
+            <li><b>Hexavalente</b> (DPaT + IPV + Hib + HepB)</li>
+            <li><b>Neumococo conjugada</b></li>
+            <li><b>Rotavirus</b> (vía oral, dentro de ventana de edad)</li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="m4">
+          <h3>4 meses</h3>
+          <ul>
+            <li>2ª dosis de <b>Hexavalente</b></li>
+            <li>2ª dosis de <b>Neumococo</b></li>
+            <li>2ª dosis de <b>Rotavirus</b></li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="m6">
+          <h3>6 meses</h3>
+          <ul>
+            <li>3ª dosis de <b>Hexavalente</b></li>
+            <li><b>Influenza</b> (inicio anual desde los 6 meses; primera vez son 2 dosis separadas)</li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="m12">
+          <h3>12 meses</h3>
+          <ul>
+            <li><b>SRP</b> (sarampión, rubéola, parotiditis)</li>
+            <li><b>Neumococo</b> (refuerzo, según esquema)</li>
+            <li><b>Hepatitis A</b> (1ª dosis)</li>
+          </ul>
+          <div class="note"><span class="badge">CLAVE</span>Por rebrotes internacionales, mantener SRP al día es muy importante.</div>
+        </div>
+
+        <div class="ageblock" id="m18">
+          <h3>18 meses</h3>
+          <ul>
+            <li><b>Refuerzo DPaT + IPV</b> (según esquema)</li>
+            <li><b>Hepatitis A</b> (2ª dosis)</li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="y4_6">
+          <h3>4–6 años</h3>
+          <ul>
+            <li><b>Refuerzo SRP</b></li>
+            <li><b>Refuerzo DPaT + IPV</b></li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="y9_14">
+          <h3>9–14 años</h3>
+          <ul>
+            <li><b>VPH</b> (recomendado en niñas y niños; 2 dosis si se inicia antes de los 15 años, según programa)</li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="y11_12">
+          <h3>11–12 años</h3>
+          <ul>
+            <li><b>Tdap</b> (tétanos, difteria, tos ferina acelular)</li>
+            <li><b>Meningococo ACWY</b></li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="y16_18">
+          <h3>16–18 años</h3>
+          <ul>
+            <li><b>Refuerzo Meningococo ACWY</b> (según esquema)</li>
+            <li><b>Meningococo B</b> (según riesgo / recomendación local)</li>
+          </ul>
+        </div>
+
+        <div class="ageblock" id="y19_21">
+          <h3>19–21 años</h3>
+          <ul>
+            <li><b>Influenza anual</b></li>
+            <li><b>Refuerzo Td/Tdap</b> cada 10 años</li>
+            <li><b>VPH</b> si esquema incompleto</li>
+            <li><b>COVID-19</b> según indicaciones vigentes</li>
+          </ul>
+        </div>
+
+        <details>
+          <summary>🔎 Nota importante sobre esquemas</summary>
+          <p class="tiny">Los calendarios pueden variar por país (programas nacionales) y por condición clínica. Este micrositio sirve como guía educativa para familias; tu pediatra confirmará dosis y fechas exactas.</p>
+        </details>
+      </section>
+
+      <aside class="card" id="novedades">
+        <h2>⭐ Novedades relevantes (2024–2025)</h2>
+        <div class="kpi">
+          <div class="k"><b>VSR</b><span class="tiny">Protección con nirsevimab en lactantes (según criterios).</span></div>
+          <div class="k"><b>VPH</b><span class="tiny">Recomendado para niñas y niños, mayor cobertura.</span></div>
+          <div class="k"><b>Sarampión</b><span class="tiny">Refuerzo del mensaje: SRP al día por rebrotes.</span></div>
+          <div class="k"><b>Influenza</b><span class="tiny">Priorizar cada temporada desde 6 meses.</span></div>
+        </div>
+
+        <div class="note"><span class="badge">TIP</span>Si tu bebé nació en temporada de VSR, pregunta por la estrategia de protección adecuada.</div>
+
+        <section class="card" style="padding:0; box-shadow:none; background:transparent;" id="faq">
+          <h2 style="margin-top:14px;">❓ Dudas frecuentes</h2>
+          <details open>
+            <summary>¿Las vacunas son seguras?</summary>
+            <p class="tiny">Sí. Pasan por evaluación estricta y vigilancia continua. Las reacciones más comunes son leves y temporales.</p>
+          </details>
+          <details>
+            <summary>¿Qué reacciones son normales?</summary>
+            <p class="tiny">Dolor local, fiebre leve, irritabilidad o sueño. Si hay dificultad respiratoria, ronchas generalizadas, somnolencia extrema o empeoramiento importante, busca atención médica.</p>
+          </details>
+          <details>
+            <summary>¿Puedo retrasar vacunas?</summary>
+            <p class="tiny">No es recomendable: retrasarlas deja ventanas de riesgo abiertas. Lo ideal es seguir el calendario y, si hubo retrasos, aplicar un esquema de rescate indicado por el pediatra.</p>
+          </details>
+        </section>
+
+        <section class="card" style="padding:0; box-shadow:none; background:transparent;" id="accion">
+          <h2 style="margin-top:14px;">📞 Acción</h2>
+          <p class="sub">Deja listo tu mensaje para agendar vacunación.</p>
+          <div class="btnrow">
+            <button class="btn" id="copyMsg">📋 Copiar mensaje</button>
+            <a class="btn secondary" id="waLink" href="#" target="_blank" rel="noopener">💬 Enviar por WhatsApp</a>
+          </div>
+          <p class="tiny" style="margin-top:10px;">
+            <b>Configura tu WhatsApp:</b> abre <code>app.js</code> y cambia <code>WHATSAPP_NUMBER</code> por tu número con lada (sin + ni espacios).
+          </p>
+        </section>
+
+        <div class="note">
+          <span class="badge warn">AVISO</span>
+          Esta información es educativa y no sustituye la valoración médica presencial.
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> PediBot Expert • Dr. Osito</div>
+    <div class="tiny">Fuentes de referencia: AAP, CDC, OMS (consultar guías locales vigentes).</div>
+  </footer>
+
+<script src="./app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+  }
+</script>
+</body>
+</html>
